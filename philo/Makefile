@@ -3,7 +3,7 @@ NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
 
-SRC = philo.c atoi.c initialization.c
+SRC = philo.c atoi.c inits.c utils.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:23:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/04/30 15:52:35 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:46:53 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <sys/time.h>
 # include <stdio.h>
 
 typedef struct s_data
@@ -43,9 +44,22 @@ typedef struct s_philo
 	t_data			*data;
 }	t_philo;
 
-int		ft_atoi(const char *str);
-int		data_init(int ac, char **av, t_data *data);
-int		philos_init(t_philo **philos, t_data *data);
-void	destroy_data_mutexs(t_data *data);
+//Init structs
+int				data_init(int ac, char **av, t_data *data);
+int				philos_init(t_philo **philos, t_data *data);
+void			destroy_data_mutexs(t_data *data);
+
+//Utils
+int				print_error(char *err);
+unsigned long	get_current_time(void);
+void			print_state(t_data *data, int id, char *print);
+int				ft_atoi(const char *str);
+
+//Actions
+void			pick_fork(t_philo *philo);
+void			eat(t_philo *philo);
+void			release_fork(t_philo *philo);
+void			sleep_philo(t_philo *philo);
+void			think(t_philo *philo);
 
 #endif

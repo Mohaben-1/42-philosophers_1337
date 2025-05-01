@@ -6,30 +6,98 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:24:50 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/04/30 17:47:29 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:42:12 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	*monitor_death(void *arg)
+{
+	t_data			*data;
+	unsigned long	time_since_last_meal;
+	int				i;
+
+	data = (t_data *)arg;
+	while (1)
+	{
+		pthread_mutex_lock(&data->stop_mutex);
+		if (data->stop_simulation)
+		{
+			pthread_mutex_unlock(&data->stop_mutex);
+			break ;
+		}
+		pthread_mutex_unlock(&data->stop_mutex);
+		if (check_meals_complete(data))
+            break;
+		i = 0;
+		while (i < data->philos_nb)
+		{
+			pthread_mutex_lock(&data->meal_mutex);
+			time_since_last_meal = get_current_time() - data->philos[i].last_meal_time;
+			pthread_mutex_unlock(&data->meal_mutex);
+			if (time_since_last_meal >= data->die_time)
+			{
+				pthread_mutex_lock(&data->stop_mutex);
+				if (!data->stop_simulation)
+				{
+					data->stop_simulation = 1;
+					pthread_mutex_unlock(&data->stop_mutex);
+					print_state(data, data->philos[i].id, "died");
+					return (NULL);
+				}
+				pthread_mutex_unlock(&data->stop_mutex);
+				return (NULL);
+			}
+			i++;
+		}
+		usleep(100);
+	}
+	return (NULL);
+}
+
+
+
+void	*single_philo_routine(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	pthread_mutex_lock(philo->left_fork);
+	print_state(philo->data, philo->id, "has taken a fork");
+	ft_usleep(philo->data->die_time, philo->data);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_lock(&philo->data->stop_mutex);
+	philo->data->stop_simulation = 1;
+	pthread_mutex_unlock(&philo->data->stop_mutex);
+	return (NULL);
+}
 
 void	*routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->data->meal_mutex);
+	philo->last_meal_time = get_current_time();
+	pthread_mutex_unlock(&philo->data->meal_mutex);
 	while (1)
 	{
-		pthread_mutex_lock(&(philo->data->stop_mutex));
-		if (philo->data->stop_simulation)
-		{
-			pthread_mutex_unlock(&(philo->data->stop_mutex));
-			break ;
-		}
-		pthread_mutex_unlock(&(philo->data->stop_mutex));
+		if (check_stop(philo))
+			return (NULL);
 		pick_fork(philo);
+		if (check_stop(philo))
+		{
+			release_fork(philo);
+			return (NULL);
+		}
 		eat(philo);
 		release_fork(philo);
+		if (check_stop(philo))
+			return (NULL);
 		sleep_philo(philo);
+		if (check_stop(philo))
+			return (NULL);
 		think(philo);
 	}
 	return (NULL);
@@ -37,16 +105,24 @@ void	*routine(void *arg)
 
 int	create_philos_thread(t_philo *philo, t_data *data)
 {
+	pthread_t	monitor_thread;
 	int	i;
 
 	i = 0;
 	data->start_time = get_current_time();
-	while (i < data->philos_nb)
+	if (data->philos_nb == 1)
+		pthread_create(&philo[0].thread_id, NULL, single_philo_routine, &philo[0]);
+	else
 	{
-		if (pthread_create(&(philo[i].thread_id), NULL, routine, &philo[i]))
-			return (print_error("Failed to create thread"));
-		i++;
+		while (i < data->philos_nb)
+		{
+			if (pthread_create(&(philo[i].thread_id), NULL, routine, &philo[i]))
+				return (print_error("Failed to create thread"));
+			i++;
+		}	
 	}
+	if (pthread_create(&monitor_thread, NULL, monitor_death, data))
+		return (print_error("Failed to create monitor thread"));
 	i = 0;
 	while (i < data->philos_nb)
 	{
@@ -54,21 +130,28 @@ int	create_philos_thread(t_philo *philo, t_data *data)
 			return (print_error("Failed to join thread"));
 		i++;
 	}
+	pthread_join(monitor_thread, NULL);
 	return (1);
 }
 
 int	main(int ac, char **av)
 {
-	t_data	data;
-	t_philo	*philos;
+	t_data		data;
+	t_philo		*philos;
 
 	if (!data_init(ac, av, &data))
 		return (1);
+	if (data.meals_required == 0)
+	{
+		destroy_data_mutexs(&data);
+		return (0);
+	}
 	if (!philos_init(&philos, &data))
 	{
 		destroy_data_mutexs(&data);
 		return (1);
 	}
+	data.philos = philos;
 	if (!create_philos_thread(philos, &data))
 	{
 		destroy_data_mutexs(&data);

@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:23:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/04/30 17:46:53 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:05:37 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct s_data
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	stop_mutex;
 	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	meal_mutex;
+	struct s_philo	*philos;
 }	t_data;
 
 typedef struct s_philo
@@ -50,10 +52,12 @@ int				philos_init(t_philo **philos, t_data *data);
 void			destroy_data_mutexs(t_data *data);
 
 //Utils
+int				ft_atoi(const char *str);
 int				print_error(char *err);
 unsigned long	get_current_time(void);
-void			print_state(t_data *data, int id, char *print);
-int				ft_atoi(const char *str);
+void			print_state(t_data *data, int id, char *state);
+void			ft_usleep(unsigned long duration, t_data *data);
+int				check_stop(t_philo *philo);
 
 //Actions
 void			pick_fork(t_philo *philo);
@@ -61,5 +65,7 @@ void			eat(t_philo *philo);
 void			release_fork(t_philo *philo);
 void			sleep_philo(t_philo *philo);
 void			think(t_philo *philo);
+
+int				check_meals_complete(t_data *data);
 
 #endif

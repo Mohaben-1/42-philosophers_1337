@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:50:59 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/04/30 17:43:24 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/01 20:50:10 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	create_data_mutexs(t_data *data)
 		}
 	}
 	if (pthread_mutex_init(&(data->stop_mutex), NULL)
-		|| pthread_mutex_init(&(data->print_mutex), NULL))
+		|| pthread_mutex_init(&(data->print_mutex), NULL) || pthread_mutex_init(&(data->meal_mutex), NULL))
 	{
 		while (--i >= 0)
 			pthread_mutex_destroy(&(data->forks[i]));
@@ -59,6 +59,7 @@ void	destroy_data_mutexs(t_data *data)
 	}
 	pthread_mutex_destroy(&(data->stop_mutex));
 	pthread_mutex_destroy(&(data->print_mutex));
+	pthread_mutex_destroy(&(data->meal_mutex));
 	free(data->forks);
 }
 
@@ -72,6 +73,7 @@ int	data_init(int ac, char **av, t_data *data)
 	data->die_time = ft_atoi(av[2]);
 	data->eat_time = ft_atoi(av[3]);
 	data->sleep_time = ft_atoi(av[4]);
+	printf("%lu %lu %lu\n", data->die_time, data->eat_time, data->sleep_time);
 	if (data->die_time < 60 || data->eat_time < 60 || data->sleep_time < 60)
 		return (print_error("Time value should not be lower than 60 ms!"));
 	if (ac == 6)

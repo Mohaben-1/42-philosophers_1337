@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:39:09 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/01 18:46:22 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:49:55 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,8 @@ void	print_state(t_data *data, int philo_id, char *state)
 
 	pthread_mutex_lock(&data->print_mutex);
 	timestamp = get_current_time() - data->start_time;
-	if (ft_strcmp(state, "died") == 0)
+	if (!data->stop_simulation)
 		printf("%lu %d %s\n", timestamp, philo_id, state);
-	else
-	{
-		pthread_mutex_lock(&data->stop_mutex);
-		if (!data->stop_simulation)
-			printf("%lu %d %s\n", timestamp, philo_id, state);
-		pthread_mutex_unlock(&data->stop_mutex);
-	}
 	pthread_mutex_unlock(&data->print_mutex);
 }
 

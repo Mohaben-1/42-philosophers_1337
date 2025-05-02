@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:23:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/01 20:05:37 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/02 19:54:00 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int				philos_init(t_philo **philos, t_data *data);
 void			destroy_data_mutexs(t_data *data);
 
 //Utils
-int				ft_atoi(const char *str);
+unsigned long	ft_atoi(const char *str);
 int				print_error(char *err);
 unsigned long	get_current_time(void);
 void			print_state(t_data *data, int id, char *state);

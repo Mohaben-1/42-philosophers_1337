@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 17:43:49 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/01 16:14:56 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:13:13 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,10 @@
 
 void	pick_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_lock(philo->left_fork);
-		print_state(philo->data, philo->id, "has taken a fork");
-		pthread_mutex_lock(philo->right_fork);
-		print_state(philo->data, philo->id, "has taken a fork");
-	}
-	else
-	{
-		pthread_mutex_lock(philo->right_fork);
-		print_state(philo->data, philo->id, "has taken a fork");
-		pthread_mutex_lock(philo->left_fork);
-		print_state(philo->data, philo->id, "has taken a fork");
-	}
+	pthread_mutex_lock(philo->left_fork);
+	print_state(philo->data, philo->id, "has taken a fork");
+	pthread_mutex_lock(philo->right_fork);
+	print_state(philo->data, philo->id, "has taken a fork");
 }
 
 void	eat(t_philo *philo)
@@ -42,16 +32,8 @@ void	eat(t_philo *philo)
 
 void	release_fork(t_philo *philo)
 {
-	if (philo->id % 2 == 0)
-	{
-		pthread_mutex_unlock(philo->right_fork);
-		pthread_mutex_unlock(philo->left_fork);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-	}
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
 void	sleep_philo(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:24:50 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/01 20:42:12 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/02 20:12:43 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	*monitor_death(void *arg)
 		}
 		pthread_mutex_unlock(&data->stop_mutex);
 		if (check_meals_complete(data))
-            break;
+			break ;
 		i = 0;
 		while (i < data->philos_nb)
 		{
@@ -41,17 +41,17 @@ void	*monitor_death(void *arg)
 				pthread_mutex_lock(&data->stop_mutex);
 				if (!data->stop_simulation)
 				{
+					print_state(data, data->philos[i].id, "died");
 					data->stop_simulation = 1;
 					pthread_mutex_unlock(&data->stop_mutex);
-					print_state(data, data->philos[i].id, "died");
 					return (NULL);
 				}
 				pthread_mutex_unlock(&data->stop_mutex);
 				return (NULL);
 			}
 			i++;
+			usleep(100);
 		}
-		usleep(100);
 	}
 	return (NULL);
 }
@@ -81,24 +81,17 @@ void	*routine(void *arg)
 	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal_time = get_current_time();
 	pthread_mutex_unlock(&philo->data->meal_mutex);
+	if (philo->id % 2 == 0)
+		usleep((philo->data->eat_time / 2) * 1000);
 	while (1)
 	{
-		if (check_stop(philo))
-			return (NULL);
+		think(philo);
 		pick_fork(philo);
-		if (check_stop(philo))
-		{
-			release_fork(philo);
-			return (NULL);
-		}
 		eat(philo);
 		release_fork(philo);
-		if (check_stop(philo))
-			return (NULL);
 		sleep_philo(philo);
 		if (check_stop(philo))
 			return (NULL);
-		think(philo);
 	}
 	return (NULL);
 }

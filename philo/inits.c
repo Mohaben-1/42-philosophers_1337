@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:50:59 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/01 20:50:10 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/02 18:05:15 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ int	data_init(int ac, char **av, t_data *data)
 	data->die_time = ft_atoi(av[2]);
 	data->eat_time = ft_atoi(av[3]);
 	data->sleep_time = ft_atoi(av[4]);
-	printf("%lu %lu %lu\n", data->die_time, data->eat_time, data->sleep_time);
+	// printf("%lu %lu %lu\n", data->die_time, data->eat_time, data->sleep_time);
 	if (data->die_time < 60 || data->eat_time < 60 || data->sleep_time < 60)
 		return (print_error("Time value should not be lower than 60 ms!"));
 	if (ac == 6)

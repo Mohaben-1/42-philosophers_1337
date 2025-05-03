@@ -64,9 +64,10 @@ void	*single_philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(philo->left_fork);
+	print_state(philo->data, philo->id, " is thinking");
 	print_state(philo->data, philo->id, "has taken a fork");
-	ft_usleep(philo->data->die_time, philo->data);
 	pthread_mutex_unlock(philo->left_fork);
+	ft_usleep(philo->data->die_time, philo->data);
 	pthread_mutex_lock(&philo->data->stop_mutex);
 	philo->data->stop_simulation = 1;
 	pthread_mutex_unlock(&philo->data->stop_mutex);
@@ -81,7 +82,7 @@ void	*routine(void *arg)
 	pthread_mutex_lock(&philo->data->meal_mutex);
 	philo->last_meal_time = get_current_time();
 	pthread_mutex_unlock(&philo->data->meal_mutex);
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1)
 		usleep((philo->data->eat_time / 2) * 1000);
 	while (1)
 	{

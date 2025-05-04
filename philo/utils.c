@@ -6,28 +6,24 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 16:39:09 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/02 19:49:55 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/04 13:18:38 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int	print_error(char *err)
+{
+	printf("%s\n", err);
+	return (0);
+}
+
 unsigned long	get_current_time(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec * 1000 + tv.tv_usec / 1000);
-}
-
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2 && *s1 == *s2)
-	{
-		s1++;
-		s2++;
-	}
-	return ((unsigned char)*s1 - (unsigned char)*s2);
 }
 
 void	print_state(t_data *data, int philo_id, char *state)
@@ -37,7 +33,7 @@ void	print_state(t_data *data, int philo_id, char *state)
 	pthread_mutex_lock(&data->print_mutex);
 	timestamp = get_current_time() - data->start_time;
 	if (!data->stop_simulation)
-		printf("%lu %d %s\n", timestamp, philo_id, state);
+		printf("%-4lu %-3d %s\n", timestamp, philo_id, state);
 	pthread_mutex_unlock(&data->print_mutex);
 }
 
@@ -53,7 +49,7 @@ void	ft_usleep(unsigned long duration, t_data *data)
 		if (data->stop_simulation)
 		{
 			pthread_mutex_unlock(&data->stop_mutex);
-			break;
+			break ;
 		}
 		pthread_mutex_unlock(&data->stop_mutex);
 	}

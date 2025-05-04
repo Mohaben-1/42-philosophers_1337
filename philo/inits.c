@@ -6,15 +6,18 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 15:50:59 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/02 20:30:55 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/04 12:27:14 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	print_error(char *err)
+int	check_mutex_fail(t_data *data)
 {
-	printf("%s\n", err);
+	if (pthread_mutex_init(&(data->stop_mutex), NULL)
+		|| pthread_mutex_init(&(data->print_mutex), NULL)
+		|| pthread_mutex_init(&(data->meal_mutex), NULL))
+		return (1);
 	return (0);
 }
 
@@ -36,8 +39,7 @@ int	create_data_mutexs(t_data *data)
 			return (0);
 		}
 	}
-	if (pthread_mutex_init(&(data->stop_mutex), NULL)
-		|| pthread_mutex_init(&(data->print_mutex), NULL) || pthread_mutex_init(&(data->meal_mutex), NULL))
+	if (check_mutex_fail(data))
 	{
 		while (--i >= 0)
 			pthread_mutex_destroy(&(data->forks[i]));

@@ -1,9 +1,9 @@
-NAME = philo
+NAME = philo_bonus
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
 
-SRC = philo.c atoi.c inits.c utils.c actions.c routine.c monitoring.c 
+SRC = 
 
 OBJ = $(SRC:.c=.o)
 
@@ -12,8 +12,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
 
-
-%.o: %.c philo.h
+%.o: %.c philo_bonus.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

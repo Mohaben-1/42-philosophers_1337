@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:23:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/02 19:54:00 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/04 12:22:46 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef struct s_philo
 	int				id;
 	int				meals_eaten;
 	unsigned long	last_meal_time;
-	pthread_t		thread_id;
+	pthread_t		thread;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	t_data			*data;
@@ -66,6 +66,12 @@ void			release_fork(t_philo *philo);
 void			sleep_philo(t_philo *philo);
 void			think(t_philo *philo);
 
+//Routine
+void			*routine(void *arg);
 int				check_meals_complete(t_data *data);
+void			*single_routine(void *arg);
+
+//Monitoring
+void			*monitor_death(void *arg);
 
 #endif

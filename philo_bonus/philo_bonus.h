@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:00:37 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 16:58:11 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/04 20:06:21 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,23 @@
 # include <stdio.h>
 # include <limits.h>
 # include <sys/time.h>
+#include <signal.h>
 # include <fcntl.h>
 # include <semaphore.h>
 # include <sys/wait.h>
 
-# define SEM_NAME "/philo_sem"
+# define SEM_FORKS "/sem_forks"
+# define SEM_STOP "/sem_stop"
+# define SEM_PRINT "/sem_print"
+# define SEM_MEAL "/sem_meal"
+
+typedef	struct	s_sems
+{
+	sem_t			*forks;
+	sem_t			*stop_sem;
+	sem_t			*print_sem;
+	sem_t			*meal_sem;
+}	t_sems;
 
 typedef struct s_data
 {
@@ -32,11 +44,8 @@ typedef struct s_data
 	unsigned long	sleep_time;
 	unsigned long	start_time;
 	int				meals_required;
-	sem_t			*forks;
-	sem_t			*stop_sem;
-	sem_t			*print_sem;
-	sem_t			*meal_sem;
 	struct s_philo	*philos;
+	t_sems			*sems;
 }	t_data;
 
 typedef struct s_philo
@@ -47,5 +56,30 @@ typedef struct s_philo
 	pid_t			philo_pid;
 	t_data			*data;
 }	t_philo;
+
+//Utils
+int				print_error(char *err);
+unsigned long	ft_atoi(const char *str);
+void			ft_usleep(unsigned long duration);
+unsigned long	get_current_time(void);
+void			print_state(t_data *data, int philo_id, char *state);
+
+
+void			wait_for_stop_and_kill(t_data *data, t_philo *philos);
+
+//Init structs
+int				data_init(int ac, char **av, t_data *data);
+int				philos_init(t_philo **philos, t_data *data);
+
+void			cleanup_sems(t_data *data);
+
+
+
+//Actions
+void			pick_fork(t_philo *philo);
+void			eat(t_philo *philo);
+void			release_fork(t_philo *philo);
+void			sleep_philo(t_philo *philo);
+void			think(t_philo *philo);
 
 #endif

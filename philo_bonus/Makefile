@@ -1,9 +1,9 @@
 NAME = philo_bonus
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=thread -g
+CFLAGS = -Wall -Werror -Wextra
 
-SRC = 
+SRC = philo_bonus.c atoi_bonus.c inits_bonus.c utils_bonus.c routine_bonus.c 
 
 OBJ = $(SRC:.c=.o)
 

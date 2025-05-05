@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:00:37 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/05 15:09:11 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:32:18 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,10 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <limits.h>
-# include <sys/time.h>
 # include <signal.h>
-# include <fcntl.h>
 # include <pthread.h>
 # include <semaphore.h>
+# include <sys/time.h>
 # include <sys/wait.h>
 
 # define SEM_FORKS "/sem_forks"
@@ -77,5 +76,10 @@ void			eat(t_philo *philo);
 void			release_fork(t_philo *philo);
 void			sleep_philo(t_philo *philo);
 void			think(t_philo *philo);
+
+//Simulation
+void			routine(t_philo *philo);
+void			*monitor_meals(void *arg);
+void			*death_monitoring(void *arg);
 
 #endif

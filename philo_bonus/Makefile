@@ -3,7 +3,7 @@ NAME = philo_bonus
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 
-SRC = philo_bonus.c atoi_bonus.c inits_bonus.c utils_bonus.c routine_bonus.c 
+SRC = philo_bonus.c atoi_bonus.c inits_bonus.c utils_bonus.c simulation_bonus.c actions_bonus.c 
 
 OBJ = $(SRC:.c=.o)
 

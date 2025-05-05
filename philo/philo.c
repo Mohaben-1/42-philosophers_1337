@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:24:50 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 12:22:46 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:00:35 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	create_philosopher_threads(t_philo *philo, t_data *data)
 {
 	int	i;
 
-	i = -1;
 	data->start_time = get_current_time();
 	if (data->philos_nb == 1)
 	{
@@ -24,6 +23,7 @@ int	create_philosopher_threads(t_philo *philo, t_data *data)
 			return (print_error("Failed to create thread"));
 		return (1);
 	}
+	i = -1;
 	while (++i < data->philos_nb)
 	{
 		if (pthread_create(&(philo[i].thread), NULL, routine, &philo[i]))

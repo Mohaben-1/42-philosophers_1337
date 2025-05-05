@@ -6,11 +6,21 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:34:56 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 20:45:45 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:07:04 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] && s2[i] && s1[i] == s2[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
 
 int	print_error(char *err)
 {
@@ -42,18 +52,6 @@ void	print_state(t_data *data, int philo_id, char *state)
 	sem_wait(data->sems->print_sem);
 	timestamp = get_current_time() - data->start_time;
 	printf("%-4lu %-3d %s\n", timestamp, philo_id, state);
-	sem_post(data->sems->print_sem);
-}
-
-void	wait_for_stop_and_kill(t_data *data, t_philo *philos)
-{
-	int	i;
-
-	i = 0;
-	sem_wait(data->sems->stop_sem);
-	while (i < data->philos_nb)
-	{
-		kill(philos[i].philo_pid, SIGKILL);
-		i++;
-	}
+	if (ft_strcmp(state, "died"))
+		sem_post(data->sems->print_sem);
 }

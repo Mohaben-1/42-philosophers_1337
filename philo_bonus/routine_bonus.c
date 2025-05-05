@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 19:43:49 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 20:00:22 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:17:04 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@ void	pick_fork(t_philo *philo)
 
 void	eat(t_philo *philo)
 {
-	sem_wait(philo->data->sems->meal_sem);
 	philo->last_meal_time = get_current_time();
 	philo->meals_eaten++;
-	sem_post(philo->data->sems->meal_sem);
 	print_state(philo->data, philo->id, "is eating");
 	ft_usleep(philo->data->eat_time);
 }

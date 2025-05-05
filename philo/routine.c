@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/01 18:52:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 13:19:15 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:56:54 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int	check_meals_complete(t_data *data)
 	if (data->meals_required <= 0)
 		return (0);
 	pthread_mutex_lock(&data->meal_mutex);
-	i = 0;
-	while (i++ < data->philos_nb)
+	i = -1;
+	while (++i < data->philos_nb)
 	{
 		if (data->philos[i].meals_eaten < data->meals_required)
 		{
@@ -68,13 +68,13 @@ void	*routine(void *arg)
 		usleep((philo->data->eat_time / 2) * 1000);
 	while (1)
 	{
+		if (check_stop(philo))
+			return (NULL);
 		pick_fork(philo);
 		eat(philo);
 		release_fork(philo);
 		sleep_philo(philo);
 		think(philo);
-		if (check_stop(philo))
-			return (NULL);
 	}
 	return (NULL);
 }

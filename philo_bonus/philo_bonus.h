@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 13:00:37 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 20:06:21 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:09:11 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,23 @@
 # include <stdio.h>
 # include <limits.h>
 # include <sys/time.h>
-#include <signal.h>
+# include <signal.h>
 # include <fcntl.h>
+# include <pthread.h>
 # include <semaphore.h>
 # include <sys/wait.h>
 
 # define SEM_FORKS "/sem_forks"
 # define SEM_STOP "/sem_stop"
 # define SEM_PRINT "/sem_print"
-# define SEM_MEAL "/sem_meal"
+# define SEM_REQ_MEALS "/sem_req_meals"
 
-typedef	struct	s_sems
+typedef struct s_sems
 {
-	sem_t			*forks;
-	sem_t			*stop_sem;
-	sem_t			*print_sem;
-	sem_t			*meal_sem;
+	sem_t	*forks;
+	sem_t	*stop_sem;
+	sem_t	*print_sem;
+	sem_t	*required_sem;
 }	t_sems;
 
 typedef struct s_data
@@ -64,16 +65,11 @@ void			ft_usleep(unsigned long duration);
 unsigned long	get_current_time(void);
 void			print_state(t_data *data, int philo_id, char *state);
 
-
-void			wait_for_stop_and_kill(t_data *data, t_philo *philos);
-
 //Init structs
 int				data_init(int ac, char **av, t_data *data);
 int				philos_init(t_philo **philos, t_data *data);
-
 void			cleanup_sems(t_data *data);
-
-
+void			wait_for_stop_and_kill(t_data *data, t_philo *philos);
 
 //Actions
 void			pick_fork(t_philo *philo);

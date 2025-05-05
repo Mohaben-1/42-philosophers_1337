@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 17:33:51 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 18:31:57 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 15:35:12 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@ int	sems_init(t_data *data)
 	t_sems	*sems;
 
 	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_MEAL);
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_STOP);
+	sem_unlink(SEM_REQ_MEALS);
 	sems = malloc(sizeof(t_sems));
 	if (!sems)
 		return (print_error("malloc failed for sems"));
 	sems->forks = sem_open(SEM_FORKS, O_CREAT | O_EXCL, 0644, data->philos_nb);
-	sems->meal_sem = sem_open(SEM_MEAL, O_CREAT | O_EXCL, 0644, 0);
 	sems->print_sem = sem_open(SEM_PRINT, O_CREAT | O_EXCL, 0644, 1);
 	sems->stop_sem = sem_open(SEM_STOP, O_CREAT | O_EXCL, 0644, 1);
-	if (sems->forks == SEM_FAILED || sems->meal_sem == SEM_FAILED
-		|| sems->print_sem == SEM_FAILED || sems->stop_sem == SEM_FAILED)
+	sems->required_sem = sem_open(SEM_REQ_MEALS, O_CREAT | O_EXCL, 0644, 0);
+	if (sems->forks == SEM_FAILED || sems->print_sem == SEM_FAILED
+		|| sems->stop_sem == SEM_FAILED || sems->required_sem == SEM_FAILED)
 	{
 		free(sems);
 		return (print_error("Failed to open semaphores!"));
@@ -42,13 +42,13 @@ void	cleanup_sems(t_data *data)
 	if (!data->sems)
 		return ;
 	sem_close(data->sems->forks);
-	sem_close(data->sems->meal_sem);
 	sem_close(data->sems->print_sem);
 	sem_close(data->sems->stop_sem);
+	sem_close(data->sems->required_sem);
 	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_MEAL);
 	sem_unlink(SEM_PRINT);
 	sem_unlink(SEM_STOP);
+	sem_unlink(SEM_REQ_MEALS);
 	free(data->sems);
 }
 

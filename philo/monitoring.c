@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/04 11:45:27 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 11:59:27 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 16:00:26 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	*monitor_death(void *arg)
 	while (!should_stop_simulation(data))
 	{
 		if (check_meals_complete(data))
-			break ;
+			return (NULL);
 		i = 0;
 		while (i < data->philos_nb)
 		{

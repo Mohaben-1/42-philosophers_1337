@@ -6,7 +6,7 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:23:30 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/04 12:22:46 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:50:30 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <limits.h>
 # include <stdio.h>
 
 typedef struct s_data

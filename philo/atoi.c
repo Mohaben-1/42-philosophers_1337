@@ -6,12 +6,11 @@
 /*   By: mohaben- <mohaben-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 11:36:12 by mohaben-          #+#    #+#             */
-/*   Updated: 2025/05/02 19:53:38 by mohaben-         ###   ########.fr       */
+/*   Updated: 2025/05/05 19:50:12 by mohaben-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <limits.h>
 
 unsigned long	ft_atoi(const char *str)
 {

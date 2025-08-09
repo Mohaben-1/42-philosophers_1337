@@ -159,5 +159,7 @@ make re         # Full rebuild
 
 ---
 
-For complete details, refer to the subject file:
-📄 [`en.subject.pdf`](./subject/en.subject.pdf)
+## 🛡️ License 
+
+This project is part of the 1337 curriculum. It is shared here for educational purposes and should not be used for plagiarism.
+
